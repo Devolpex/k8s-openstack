@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.configServer.deployment.name }}
+  labels:
+    app: {{ .Values.configServer.name}}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+        app: {{ .Values.configServer.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.configServer.name }}
+    spec:
+      containers:
+        - name: {{ .Values.configServer.conatiner.name}}
+          image: "{{ .Values.configServer.image.repository }}:{{ .Values.configServer.image.tag  | default .Chart.AppVersion }}"
+          ports:
+            - name: {{ .Values.configServer.conatiner.ports.name }}
+              containerPort: {{ .Values.configServer.conatiner.ports.containerPort }}
+              protocol: {{ .Values.configServer.conatiner.ports.protocol }}
+          resources:
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+            requests:
+                cpu: {{ .Values.resources.requests.cpu }}
+                memory: {{ .Values.resources.requests.memory }}
+            

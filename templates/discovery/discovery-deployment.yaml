@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.discovery.deployment.name }}
+  labels:
+    app: {{ .Values.discovery.name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.discovery.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.discovery.name }}
+    spec:
+      containers:
+        - name: {{ .Values.discovery.container.name }}
+          image: "{{ .Values.discovery.image.repository }}:{{ .Values.discovery.image.tag | default .Chart.AppVersion }}"
+          ports:
+            - name: {{ .Values.discovery.container.ports.name }}
+              containerPort: {{ .Values.discovery.container.ports.containerPort }}
+              protocol: {{ .Values.discovery.container.ports.protocol }}
+          envFrom:
+            - configMapRef:
+                name: discovery-configmap
+          resources:
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}

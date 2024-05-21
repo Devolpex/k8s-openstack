@@ -1,0 +1,59 @@
+# Default values for e-shop-k8s.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+ingress:
+  enabled: false
+
+# Define the values for Config Server and Discovery Server
+configServer:
+  name: config-server
+  image:
+    repository: marouanedbibih/e-shop-config-server
+    tag: latest
+  deployment:
+    name: config-server-deployment
+    port: 8888
+  service:
+    name: config-server-service
+    type: ClusterIP
+    port: 8888
+  conatiner:
+    name: config-server-container
+    ports:
+      name: cfs-port
+      containerPort: 8888
+      protocol: TCP
+
+# Define the values for Discovery Server
+discovery:
+  configMap:
+    name: discovery-configmap
+  name: discovery
+  image:
+    repository: marouanedbibih/e-shop-discovery
+    tag: latest
+  deployment:
+    name: discovery-deployment
+    port: 8765
+  service:
+    name: discovery-service
+    type: LoadBalancer
+    port: 8765
+    targetPort: 8765
+    protocol: TCP
+  container:
+    name: discovery-container
+    ports:
+      name: dcs-port
+      containerPort: 8765
+      protocol: TCP

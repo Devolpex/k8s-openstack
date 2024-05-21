@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.discovery.service.name }}
+  labels:
+    app: {{ .Values.discovery.name }}
+spec:
+  type: {{ .Values.discovery.service.type }}
+  ports:
+    - port: {{ .Values.discovery.service.port }}
+      targetPort: {{ .Values.discovery.service.targetPort }}
+      protocol: {{ .Values.discovery.service.protocol }}
+  selector:
+    app: {{ .Values.configServer.name }}

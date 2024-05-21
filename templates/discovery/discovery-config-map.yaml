@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.discovery.configMap.name }}
+data:
+  EUREKA_HOST: "{{ .Values.discovery.service.name }}"
+  EUREKA_PORT: "{{ toString .Values.discovery.service.port }}"
+  CONFIG_SERVER_HOST: "{{ .Values.configServer.service.name }}"
+  CONFIG_SERVER_PORT: "{{ toString .Values.configServer.service.port }}"
